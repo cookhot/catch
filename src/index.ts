@@ -1,33 +1,12 @@
-import * as ex from 'excalibur';
-import { LevelOne } from './scenes/level-one/level-one';
-import { Player } from './actors/player/player';
-import { Resources } from './resources';
+import init from './init'
+import Engine from './engine'
 
-class Game extends ex.Engine {
-  constructor() {
-    super({ width: 800, height: 600, displayMode: ex.DisplayMode.FullScreen });
-  }
-
-  public start(loader: ex.Loader) {
-    return super.start(loader);
-  }
-}
-
-const game = new Game();
-const levelOne = new LevelOne(game);
-const player = new Player();
-player.addDrawing(Resources.Sword);
-
-levelOne.add(player);
-
-game.add('levelOne', levelOne);
+const canvas = init(600, 400, { border: '1px solid #ddd' })
 
 
-let loader = new ex.Loader();
-for (let key in Resources) {
-  loader.addResource(Resources[key]);
-}
+new Engine(canvas).start()
 
-game.start(loader).then(() => {
-  game.goToScene('levelOne');
-});
+
+
+
+
