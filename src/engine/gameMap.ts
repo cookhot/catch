@@ -8,49 +8,55 @@ class GameMap extends CanvasRenderView {
 
     private rows: number;
 
-    private padding: number;
-
-    constructor( cols: number, rows: number ) {
+    constructor(cols: number, rows: number) {
         super()
         this.cols = cols
-        
-        this.rows = rows
 
-        this.padding = 20
+        this.rows = rows
+    }
+
+    update() {
+        return false
     }
 
     render() {
         // 绘制列表
         const context = this.getContext()
 
-        const { width, height } = context.canvas
+        const width = this.getWidth()
 
-        const yList = d3.range(0, this.rows, 1).map(v => `${v}` )
+        const height = this.getHeight()
 
-        const xList = d3.range(0, this.cols, 1).map(v => `${v}` )
+        const padding = this.padding;
 
-        const yScale = d3.scaleBand().range([0, height]).domain(yList)
+        const yList = d3.range(0, this.rows, 1).map(v => `${v}`)
 
-        const xScale = d3.scaleBand().range([0, width]).domain(xList)
+        const xList = d3.range(0, this.cols, 1).map(v => `${v}`)
+
+        const yScale = d3.scaleBand().range([padding, height]).domain(yList)
+
+        const xScale = d3.scaleBand().range([padding, width]).domain(xList)
 
         context.strokeStyle = '#ddd'
         context.lineWidth = 1
 
         context.beginPath()
 
-        for (let i = 1, length = yList.length; i < length; i++) {
+        for (let i = 0, length = yList.length; i <= length; i++) {
             let yPosition = yScale(yList[i]) + .5
-            context.moveTo(0, yPosition)
-
+            context.moveTo(padding, yPosition)
             context.lineTo(width, yPosition)
         }
+        context.moveTo(padding, height + .5)
+        context.lineTo(width, height + .5)
 
-        for (let i = 1, length = xList.length; i < length; i++) {
+        for (let i = 0, length = xList.length; i <= length; i++) {
             let xPosition = xScale(xList[i]) + .5
-            context.moveTo(xPosition, 0)
-
+            context.moveTo(xPosition, padding)
             context.lineTo(xPosition, height)
         }
+        context.moveTo(width + .5, padding)
+        context.lineTo(width + .5, height)
 
         context.closePath()
 

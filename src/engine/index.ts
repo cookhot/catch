@@ -9,7 +9,7 @@ class Engine {
     private app: Application;
 
     private running: Boolean;
-    
+
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas
         // 构建 application
@@ -20,14 +20,14 @@ class Engine {
         this.init()
     }
 
-    init () {
+    init() {
         this.app.addView(new GameMap(6, 4))
     }
 
     // 运行
-    run () {
+    run() {
         if (!this.running) {
-            return 
+            return
         }
         this.app.render()
 
@@ -35,22 +35,21 @@ class Engine {
         this.app.update()
     }
 
-
     // 启动运行
-    start () {
+    start() {
         if (this.running) {
-            return 
+            return
         }
 
         this.running = true
-        
+
         this.run()
     }
 
     // 关闭运行
-    stop () {
-        if(!this.running) {
-            return 
+    stop() {
+        if (!this.running) {
+            return
         }
 
         this.running = false
