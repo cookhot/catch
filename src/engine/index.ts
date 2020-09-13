@@ -13,7 +13,7 @@ class Engine {
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas
         // 构建 application
-        this.app = new Application(canvas)
+        this.app = new Application(canvas, 6, 4, 30)
 
         this.running = false
 
@@ -21,7 +21,7 @@ class Engine {
     }
 
     init() {
-        this.app.addView(new GameMap(6, 4))
+        this.app.addView(new GameMap())
     }
 
     // 运行

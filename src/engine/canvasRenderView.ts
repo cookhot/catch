@@ -1,18 +1,8 @@
 import View from './view'
+import Application from './application'
 
 abstract class CanvasContextView implements View {
-    private width: number;
-
-    private height: number;
-
-    private _padding: number;
-
-    public get padding(): number {
-        return this._padding;
-    }
-    public set padding(value: number) {
-        this._padding = value;
-    }
+    private app: Application;
 
     private context: CanvasRenderingContext2D;
 
@@ -20,24 +10,16 @@ abstract class CanvasContextView implements View {
         this.context = context
     }
 
-    setWidth(width: number) {
-        this.width = width
-    }
-
-    getWidth() {
-        return this.width
-    }
-
-    setHeight(height: number) {
-        this.height = height
-    }
-
-    getHeight() {
-        return this.height
-    }
-
-    getContext() {
+    getContext(): CanvasRenderingContext2D {
         return this.context
+    }
+
+    setApp(app: Application) {
+        this.app = app
+    }
+
+    getApp(): Application {
+        return this.app
     }
 
     abstract render(): void
