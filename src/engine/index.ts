@@ -19,6 +19,11 @@ async function loadImage(src, width, height) {
     })
 }
 
+
+interface EngineOption {
+
+}
+
 class Engine {
     public canvas: HTMLCanvasElement;
 
@@ -26,7 +31,7 @@ class Engine {
 
     private running: Boolean;
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, ) {
         this.canvas = canvas
         // 构建 application
         this.app = new Application(canvas, 6, 4, 30)
@@ -51,10 +56,16 @@ class Engine {
         if (!this.running) {
             return
         }
+
+        // 控制渲染条件
         this.app.render()
 
         // 提供下一个节点
         this.app.update()
+
+        setTimeout(() => {
+            this.run()
+        }, 1000)
     }
 
     // 启动运行

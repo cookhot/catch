@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import { ScaleBand } from 'd3';
 
 class Application {
-    private context: CanvasRenderingContext2D;
+    public readonly context: CanvasRenderingContext2D;
 
     private queue: CanvasContextView[];
 
@@ -101,10 +101,6 @@ class Application {
         if (!view) {
             return
         }
-
-        // 添加新视图
-        view.setContext(this.context)
-
         // 注入 app
         view.setApp(this)
 

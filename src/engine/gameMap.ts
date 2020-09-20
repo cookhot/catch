@@ -13,9 +13,9 @@ class GameMap extends CanvasRenderView {
 
     render() {
         // 绘制列表
-        const context = this.getContext()
-
         const app: Application = this.getApp()
+
+        const context = app.context
 
         const { width, height, padding, xScale, yScale } = app
 
