@@ -1,4 +1,6 @@
 import CanvasContextView from './canvasRenderView'
+import * as d3 from 'd3'
+import { ScaleBand } from 'd3';
 
 class Application {
     private context: CanvasRenderingContext2D;
@@ -32,25 +34,44 @@ class Application {
         this._width = value;
     }
 
-    private _cols: number;
+    private _cols: number[];
 
-    public get cols(): number {
+    public get cols(): number[] {
         return this._cols;
     }
-    public set cols(value: number) {
+    public set cols(value: number[]) {
         this._cols = value;
     }
 
-    private _rows: number;
+    private _rows: number[];
 
-    public get rows(): number {
+    public get rows(): number[] {
         return this._rows;
     }
-    public set rows(value: number) {
+    public set rows(value: number[]) {
         this._rows = value;
     }
 
-    constructor(canvas: HTMLCanvasElement, cols: number, rows: number, padding: number = 20) {
+    // 获取 x 比列尺
+    private _xScale: ScaleBand<string>
+
+    public get xScale(): ScaleBand<string> {
+        return this._xScale;
+    }
+    public set xScale(value: ScaleBand<string>) {
+        this._xScale = value;
+    }
+
+    private _yScale: ScaleBand<string>
+
+    public get yScale(): ScaleBand<string> {
+        return this._yScale;
+    }
+    public set yScale(value: ScaleBand<string>) {
+        this._yScale = value;
+    }
+
+    constructor(canvas: HTMLCanvasElement, colsSize: number, rowsSize: number, padding: number = 20) {
         // 检查
         if (!canvas) {
             throw new TypeError('请注入先注入 canvas')
@@ -58,15 +79,20 @@ class Application {
 
         this.context = canvas.getContext('2d')
 
-        this._cols = cols
+        // 获取到 xScale 与 yScale
+        this._cols = d3.range(0, colsSize, 1)
 
-        this._rows = rows
+        this._rows = d3.range(0, rowsSize, 1)
 
         this.padding = padding
 
         this.width = canvas.width - padding * 2
 
         this.height = canvas.height - padding * 2
+
+        this.xScale = d3.scaleBand().range([0, this.width]).domain(this.cols.map(v => `${v}`))
+
+        this.yScale = d3.scaleBand().range([0, this.height]).domain(this.rows.map(v => `${v}`))
 
         this.queue = []
     }
@@ -75,7 +101,6 @@ class Application {
         if (!view) {
             return
         }
-
 
         // 添加新视图
         view.setContext(this.context)

@@ -17,15 +17,7 @@ class GameMap extends CanvasRenderView {
 
         const app: Application = this.getApp()
 
-        const { width, height, padding, rows, cols } = app
-
-        const yList = d3.range(0, rows, 1).map(v => `${v}`)
-
-        const xList = d3.range(0, cols, 1).map(v => `${v}`)
-
-        const yScale = d3.scaleBand().range([0, height]).domain(yList)
-
-        const xScale = d3.scaleBand().range([0, width]).domain(xList)
+        const { width, height, padding, xScale, yScale } = app
 
         context.strokeStyle = '#ddd'
         context.lineWidth = 1
@@ -35,6 +27,10 @@ class GameMap extends CanvasRenderView {
         context.translate(padding, padding)
 
         context.beginPath()
+
+        const xList = xScale.domain()
+
+        const yList = yScale.domain()
 
         for (let i = 0, length = yList.length; i <= length; i++) {
             let yPosition = yScale(yList[i]) + .5

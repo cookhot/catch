@@ -17,7 +17,7 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
           test: /\.js$/,
           use: ["source-map-loader"],
           exclude: [
-            path.resolve(__dirname,'node_modules/excalibur')
+            path.resolve(__dirname, 'node_modules/excalibur')
           ],
           enforce: "pre",
         },
@@ -57,6 +57,6 @@ module.exports = ({ mode, presets } = { mode: "production", presets: [] }) => {
       })
     ]
   },
-  modeConfig(mode)
+    modeConfig(mode)
   );
 };

@@ -2,6 +2,22 @@
 import Application from './application'
 
 import GameMap from './gameMap'
+import Thief from './thief'
+
+async function loadImage(src, width, height) {
+    return new Promise<HTMLImageElement>((resolve, reject) => {
+        const image = new Image(width, height)
+        image.onload = function () {
+            resolve(image)
+        }
+
+        image.onerror = function (err) {
+            reject(err)
+        }
+
+        image.src = src
+    })
+}
 
 class Engine {
     public canvas: HTMLCanvasElement;
@@ -20,8 +36,14 @@ class Engine {
         this.init()
     }
 
-    init() {
+    async init() {
         this.app.addView(new GameMap())
+
+        const thiefImgSrc = require('../assets/img/thief.jpg')
+
+        const thiefImage = await loadImage(thiefImgSrc, 50, 50)
+
+        this.app.addView(new Thief(thiefImage))
     }
 
     // 运行
@@ -54,7 +76,6 @@ class Engine {
 
         this.running = false
     }
-
 
 }
 
