@@ -1,11 +1,18 @@
-import CanvasContextView from './canvasRenderView'
 import * as d3 from 'd3'
 import { ScaleBand } from 'd3';
 
-class Application {
-    public readonly context: CanvasRenderingContext2D;
+export default class Application {
+    private static app: Application;
 
-    private queue: CanvasContextView[];
+    static initApp(canvas: HTMLCanvasElement, colsSize: number, rowsSize: number, padding: number) {
+        Application.app = new Application(canvas, colsSize, rowsSize, padding)
+    }
+
+    static getApp(): Application {
+        return Application.app;
+    }
+
+    public readonly context: CanvasRenderingContext2D;
 
     private _padding: number;
 
@@ -93,53 +100,7 @@ class Application {
         this.xScale = d3.scaleBand().range([0, this.width]).domain(this.cols.map(v => `${v}`))
 
         this.yScale = d3.scaleBand().range([0, this.height]).domain(this.rows.map(v => `${v}`))
-
-        this.queue = []
-    }
-
-    addView(view: CanvasContextView) {
-        if (!view) {
-            return
-        }
-        // 注入 app
-        view.setApp(this)
-
-        this.queue.push(view)
-    }
-
-
-    render() {
-        const { context, queue } = this
-        // 清空原来的画布
-        const { width, height } = context.canvas
-        this.context.clearRect(0, 0, width, height)
-
-        for (let view of queue) {
-            // 绘制图形
-            view.render()
-        }
-    }
-
-    update() {
-        const { queue } = this
-
-        let delIndexGroup = []
-
-        for (let index = 0, length = queue.length; index < length; index++) {
-            let view = queue[index]
-            let result = view.update()
-            if (!result) {
-                delIndexGroup.push(index)
-            }
-        }
-
-        // 删除不更新
-        if (delIndexGroup.length > 0) {
-            for (let delIndex of delIndexGroup) {
-                queue.splice(delIndex, 1)
-            }
-        }
     }
 }
 
-export default Application
+

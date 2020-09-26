@@ -1,8 +1,9 @@
 import * as d3 from 'd3'
 import CanvasRenderView from './canvasRenderView'
-import Application from './application'
+import Application from '../application'
 
 class GameMap extends CanvasRenderView {
+
     constructor() {
         super()
     }
@@ -13,7 +14,7 @@ class GameMap extends CanvasRenderView {
 
     render() {
         // 绘制列表
-        const app: Application = this.getApp()
+        const app = Application.getApp()
 
         const context = app.context
 

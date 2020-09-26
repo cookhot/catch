@@ -1,5 +1,5 @@
 // 初始化节点
-function init(width: number, height: number, style?: Object): HTMLCanvasElement {
+function buildCanvas(width: number, height: number, style?: Object): HTMLCanvasElement {
     // 设置好 canvas 
     const canvas = document.createElement('canvas')
 
@@ -7,7 +7,7 @@ function init(width: number, height: number, style?: Object): HTMLCanvasElement 
     canvas.setAttribute('height', `${height}`)
 
     if (style) {
-        let keys = Object.keys(style) 
+        let keys = Object.keys(style)
         let styleStr = ''
         keys.forEach(key => {
             styleStr += `${key}: ${style[key]};`
@@ -23,4 +23,4 @@ function init(width: number, height: number, style?: Object): HTMLCanvasElement 
 }
 
 
-export default init
+export default buildCanvas

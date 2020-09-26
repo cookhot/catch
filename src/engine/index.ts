@@ -1,54 +1,60 @@
 // 构建引擎
-import Application from './application'
-
-import GameMap from './gameMap'
-import Thief from './thief'
-
-async function loadImage(src, width, height) {
-    return new Promise<HTMLImageElement>((resolve, reject) => {
-        const image = new Image(width, height)
-        image.onload = function () {
-            resolve(image)
-        }
-
-        image.onerror = function (err) {
-            reject(err)
-        }
-
-        image.src = src
-    })
-}
+import Application from '../application'
+import CanvasContextView from '../view/canvasRenderView'
 
 
 interface EngineOption {
+    interval?: number;
+    rows: number;
+    cols: number;
+    padding: number;
+}
 
+const defaultEngineOption: EngineOption = {
+    interval: 1000,
+    rows: 4,
+    cols: 6,
+    padding: 30
 }
 
 class Engine {
     public canvas: HTMLCanvasElement;
 
-    private app: Application;
-
     private running: Boolean;
 
-    constructor(canvas: HTMLCanvasElement, ) {
+    private options: EngineOption;
+
+    private queue: CanvasContextView[];
+
+    constructor(canvas: HTMLCanvasElement, options?: EngineOption) {
         this.canvas = canvas
-        // 构建 application
-        this.app = new Application(canvas, 6, 4, 30)
+
+        // 设置配置
+        this.options = Object.assign({}, defaultEngineOption, options)
 
         this.running = false
 
-        this.init()
+        this.queue = []
+
+        const { rows, cols, padding } = this.options
+
+        Application.initApp(canvas, cols, rows, padding)
     }
 
-    async init() {
-        this.app.addView(new GameMap())
+    public addView(view: CanvasContextView) {
+        this.queue.push(view)
+    }
 
-        const thiefImgSrc = require('../assets/img/thief.jpg')
+    private render() {
+        const { queue } = this
 
-        const thiefImage = await loadImage(thiefImgSrc, 50, 50)
+        for (let view of queue) {
+            if (view) {
+                view.render()
 
-        this.app.addView(new Thief(thiefImage))
+                view.update()
+            }
+        }
     }
 
     // 运行
@@ -57,15 +63,11 @@ class Engine {
             return
         }
 
-        // 控制渲染条件
-        this.app.render()
+        requestAnimationFrame(() => {
+            this.render()
 
-        // 提供下一个节点
-        this.app.update()
-
-        setTimeout(() => {
             this.run()
-        }, 1000)
+        })
     }
 
     // 启动运行
